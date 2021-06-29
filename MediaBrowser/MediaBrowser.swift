@@ -70,8 +70,14 @@ func floorcgf(x: CGFloat) -> CGFloat {
         $0.view.isUserInteractionEnabled = false
         return $0
     }(AVPlayerViewController())
+    lazy internal var currentVideoProgressView: MediaVideoProgressView = {
+        $0.frame = CGRect(x: 15, y: UIScreen.main.bounds.size.height - 80, width: UIScreen.main.bounds.size.width - 30, height: 50)
+        $0.playButton.addTarget(self, action: #selector(playOrPause), for: .touchUpInside)
+        return $0
+    }(MediaVideoProgressView())
     internal var currentVideoIndex = 0
     internal var currentVideoLoadingIndicator: UIActivityIndicatorView?
+    internal var playingType = 0
 
     var activityViewController: UIActivityViewController?
 
@@ -1334,6 +1340,8 @@ func floorcgf(x: CGFloat) -> CGFloat {
         if index != Int.max {
             if nil == currentVideoPlayerViewController.player {
                 playVideoAtIndex(index: index)
+            }else {
+                continuePlaying()
             }
         }
     }
@@ -1427,7 +1435,10 @@ func floorcgf(x: CGFloat) -> CGFloat {
             currentVideoPlayerViewController.view.frame = safePage.photoImageView.frame
             safePage.addSubview(currentVideoPlayerViewController.view)
             player.play()
-            
+            playingType = 1
+            currentVideoProgressView.setPlayingOrPause(isPlaying: true)
+            safePage.addSubview(currentVideoProgressView)
+            dealPlayerProgress(player: player)
         }
     }
     
@@ -1472,11 +1483,11 @@ func floorcgf(x: CGFloat) -> CGFloat {
             currentVideoLoadingIndicator = nil
             currentVideoIndex = Int.max
             
-            for page in visiblePages {
-                if page.index == self.currentIndex {
-                    page.playButton?.isHidden = false
-                }
-            }
+            let page = visiblePages.first{ $0.index == currentIndex }
+            guard let safePage = page else { return }
+            safePage.playButton?.isHidden = false
+            currentVideoProgressView.removeFromSuperview()
+            playingType = 0
         }
     }
     
@@ -1498,6 +1509,42 @@ func floorcgf(x: CGFloat) -> CGFloat {
         if currentVideoLoadingIndicator != nil && currentVideoIndex != Int.max {
             let frame = frameForPageAtIndex(index: currentVideoIndex)
             currentVideoLoadingIndicator!.center = CGPoint(x: frame.midX, y: frame.midY)
+        }
+    }
+    
+    func dealPlayerProgress(player: AVPlayer) {
+        player.addPeriodicTimeObserver(forInterval: CMTime(seconds: 0.1, preferredTimescale: 10), queue: DispatchQueue.main) {[weak self] time in
+            let allTime = Int(CMTimeGetSeconds(player.currentItem?.duration ?? CMTime(seconds: 0, preferredTimescale: 1)))
+            self?.currentVideoProgressView.setTime(now: time, all: allTime)
+        }
+    }
+    
+    @objc func playOrPause() {
+        if playingType == 1 {
+            playingType = 2
+            currentVideoProgressView.setPlayingOrPause(isPlaying: false)
+            currentVideoPlayerViewController.player?.pause()
+            let page = visiblePages.first{ $0.index == currentIndex }
+            guard let safePage = page else { return }
+            safePage.playButton?.isHidden = false
+        }else {
+            playingType = 1
+            currentVideoProgressView.setPlayingOrPause(isPlaying: true)
+            currentVideoPlayerViewController.player?.play()
+            let page = visiblePages.first{ $0.index == currentIndex }
+            guard let safePage = page else { return }
+            safePage.playButton?.isHidden = true
+        }
+    }
+    
+    func continuePlaying() {
+        if playingType == 2 {
+            playingType = 1
+            currentVideoProgressView.setPlayingOrPause(isPlaying: true)
+            currentVideoPlayerViewController.player?.play()
+            let page = visiblePages.first{ $0.index == currentIndex }
+            guard let safePage = page else { return }
+            safePage.playButton?.isHidden = true
         }
     }
     

@@ -34,6 +34,7 @@
 		71596D6C20148BBE00870E29 /* SDWebImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 71596D6B20148BBE00870E29 /* SDWebImage.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 		71596D6E20148BC300870E29 /* UICircularProgressRing.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 71596D6D20148BC300870E29 /* UICircularProgressRing.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 		786961890EA7C05AB0704224 /* Pods_MediaBrowserDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E7711DC6E06460185D3F457 /* Pods_MediaBrowserDemo.framework */; };
+		9D3A67AC268B04A200CCA9B5 /* MediaVideoProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3A67AB268B04A200CCA9B5 /* MediaVideoProgressView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -93,6 +94,7 @@
 		71596D6B20148BBE00870E29 /* SDWebImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDWebImage.framework; path = Carthage/Build/iOS/SDWebImage.framework; sourceTree = "<group>"; };
 		71596D6D20148BC300870E29 /* UICircularProgressRing.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UICircularProgressRing.framework; path = Carthage/Build/iOS/UICircularProgressRing.framework; sourceTree = "<group>"; };
 		849923070967750DB33DBED9 /* Pods-MediaBrowserDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MediaBrowserDemo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MediaBrowserDemo/Pods-MediaBrowserDemo.debug.xcconfig"; sourceTree = "<group>"; };
+		9D3A67AB268B04A200CCA9B5 /* MediaVideoProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaVideoProgressView.swift; sourceTree = "<group>"; };
 		BF32D5C5A285C283435A6A44 /* Pods-MediaBrowser.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MediaBrowser.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MediaBrowser/Pods-MediaBrowser.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -165,6 +167,7 @@
 				1906ABDA1F5F83960052DC3A /* MediaTapDetectingView.swift */,
 				1906ABDC1F5F83960052DC3A /* MediaZoomingScrollView.swift */,
 				1906ABDB1F5F83960052DC3A /* UIImageExtension.swift */,
+				9D3A67AB268B04A200CCA9B5 /* MediaVideoProgressView.swift */,
 				1906ABB41F5F81120052DC3A /* MediaBrowser.h */,
 				1906ABB51F5F81120052DC3A /* Info.plist */,
 				1906ABE81F5F9A100052DC3A /* MediaBrowser.xcassets */,
@@ -382,6 +385,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				192BD21F2250A89F00864527 /* MediaBrowser+UIScrollViewDelegate.swift in Sources */,
+				9D3A67AC268B04A200CCA9B5 /* MediaVideoProgressView.swift in Sources */,
 				1906ABE71F5F83960052DC3A /* MediaZoomingScrollView.swift in Sources */,
 				1906ABE41F5F83960052DC3A /* MediaTapDetectingImageView.swift in Sources */,
 				19E1F62E1F5FD8EE004D3BA8 /* MediaBrowserDelegate.swift in Sources */,
