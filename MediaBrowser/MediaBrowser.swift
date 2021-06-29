@@ -65,6 +65,9 @@ func floorcgf(x: CGFloat) -> CGFloat {
         if #available(iOS 9.0, *) {
             $0.delegate = self
         }
+        $0.videoGravity = .resizeAspectFill
+        $0.showsPlaybackControls = false
+        $0.view.isUserInteractionEnabled = false
         return $0
     }(AVPlayerViewController())
     internal var currentVideoIndex = 0
@@ -1415,9 +1418,16 @@ func floorcgf(x: CGFloat) -> CGFloat {
             //                object: player.moviePlayer)
             
             // Show
-            present(currentVideoPlayerViewController, animated: true, completion: {
-                player.play()
-            })
+//            present(currentVideoPlayerViewController, animated: true, completion: {
+//                player.play()
+//            })
+            let page = visiblePages.first{ $0.index == currentIndex }
+            guard let safePage = page else { return }
+            safePage.playButton?.isHidden = true
+            currentVideoPlayerViewController.view.frame = safePage.photoImageView.frame
+            safePage.addSubview(currentVideoPlayerViewController.view)
+            player.play()
+            
         }
     }
     
@@ -1450,17 +1460,23 @@ func floorcgf(x: CGFloat) -> CGFloat {
             //            }
         }
         
-        dismiss(animated: true, completion: nil)
+//        dismiss(animated: true, completion: nil)
     }
     
     func clearCurrentVideo() {
         if let player = currentVideoPlayerViewController.player {
             player.replaceCurrentItem(with: nil)
-            currentVideoPlayerViewController.dismiss(animated: true, completion: nil)
             currentVideoLoadingIndicator?.removeFromSuperview()
+            currentVideoPlayerViewController.view.removeFromSuperview()
             currentVideoPlayerViewController.player = nil
             currentVideoLoadingIndicator = nil
             currentVideoIndex = Int.max
+            
+            for page in visiblePages {
+                if page.index == self.currentIndex {
+                    page.playButton?.isHidden = false
+                }
+            }
         }
     }
     

@@ -195,6 +195,7 @@ extension ViewController {
         browser.autoPlayOnAppear = autoPlayOnAppear
         browser.cachingImageCount = 2
         browser.setCurrentIndex(at: 2)
+        browser.displayActionButton = false
         browser.actionButtonImage = UIImage(named: "iconCommon")
 //        browser.placeholderImage = (image: #imageLiteral(resourceName: "mediaBrowserDefault_white"), isAppliedForAll: false)
         
@@ -212,6 +213,7 @@ extension ViewController {
         } else {
             let nc = UINavigationController.init(rootViewController: browser)
             nc.modalTransitionStyle = .crossDissolve
+            nc.modalPresentationStyle = .fullScreen
             self.present(nc, animated: true, completion: nil)
         }
         
