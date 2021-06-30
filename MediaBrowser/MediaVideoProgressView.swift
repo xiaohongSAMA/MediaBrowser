@@ -56,6 +56,14 @@ class MediaVideoProgressView: UIView {
         return String(format: "%02d:%02d", min, sec)
     }
     
+    // 重制视图
+    func reMakeUI() {
+        self.nowTimeLabel.text = "00:00"
+        self.allTimeLabel.text = "00:00"
+        self.progress.progress = 0
+        self.playButton.isSelected = false
+    }
+    
     // MARK:- UI
     lazy var playButton: UIButton = {
         let button = UIButton()

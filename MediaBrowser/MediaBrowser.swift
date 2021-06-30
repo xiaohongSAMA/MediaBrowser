@@ -1488,6 +1488,7 @@ func floorcgf(x: CGFloat) -> CGFloat {
             safePage.playButton?.isHidden = false
             currentVideoProgressView.removeFromSuperview()
             playingType = 0
+            self.currentVideoProgressView.reMakeUI()
         }
     }
     

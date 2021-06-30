@@ -18,25 +18,38 @@ class DemoData {
     
     class func multiplePhotoAndVideo() -> [Media] {
         var photos = [Media]()
-        var photo = localMediaPhoto(imageName: "MotionBookIntro1", caption: "")
-        photos.append(photo)
+        let photo = localMediaPhoto(imageName: "MotionBookIntro1", caption: "")
+        let video = localMediaPhoto(imageName: "Atoms_thumb", caption: "")
+        video.videoURL = URL(string: "http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4")!
+        let localVideo = localMediaPhoto(imageName: "Atoms_thumb", caption: "")
+        localVideo.videoURL = URL(fileURLWithPath: Bundle.main.path(forResource: "Atoms", ofType: "mp4")!)
+        let values = [photo, video, localVideo]
         
-        photo = localMediaPhoto(imageName: "MotionBookIntro2", caption: "")
-        photos.append(photo)
+        for _ in 0...100 {
+            photos.append(values[Int.random(in: 0...2)])
+        }
         
-        photo = localMediaPhoto(imageName: "Atoms_thumb", caption: "")
-        photo.videoURL = URL(string: "http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4")!
-//        photo.videoURL = URL(fileURLWithPath: Bundle.main.path(forResource: "Atoms", ofType: "mp4")!)
-        photos.append(photo)
-        
-        photo = localMediaPhoto(imageName: "MotionBookIntro3", caption: "")
-        photos.append(photo)
-        
-        photo = localMediaPhoto(imageName: "MotionBookIntro4", caption: "")
-        photos.append(photo)
-        
-        photo = localMediaPhoto(imageName: "MotionBookIntro5", caption: "")
-        photos.append(photo)
+//        var photo = localMediaPhoto(imageName: "MotionBookIntro1", caption: "")
+//        photos.append(photo)
+//
+//        photo = localMediaPhoto(imageName: "MotionBookIntro2", caption: "")
+//        photos.append(photo)
+//
+//
+////        photo.videoURL = URL(fileURLWithPath: Bundle.main.path(forResource: "Atoms", ofType: "mp4")!)
+//        photos.append(photo)
+//
+//
+//        photos.append(photo)
+//
+//        photo = localMediaPhoto(imageName: "MotionBookIntro3", caption: "")
+//        photos.append(photo)
+//
+//        photo = localMediaPhoto(imageName: "MotionBookIntro4", caption: "")
+//        photos.append(photo)
+//
+//        photo = localMediaPhoto(imageName: "MotionBookIntro5", caption: "")
+//        photos.append(photo)
         
         return photos
     }
