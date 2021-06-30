@@ -1514,7 +1514,10 @@ func floorcgf(x: CGFloat) -> CGFloat {
     
     func dealPlayerProgress(player: AVPlayer) {
         player.addPeriodicTimeObserver(forInterval: CMTime(seconds: 0.1, preferredTimescale: 10), queue: DispatchQueue.main) {[weak self] time in
-            let allTime = Int(CMTimeGetSeconds(player.currentItem?.duration ?? CMTime(seconds: 0, preferredTimescale: 1)))
+            if player.currentItem?.duration.timescale == CMTimeScale(0) {
+                return
+            }
+            let allTime = CMTimeGetSeconds(player.currentItem?.duration ?? CMTime(seconds: 0, preferredTimescale: 1))
             self?.currentVideoProgressView.setTime(now: time, all: allTime)
         }
     }

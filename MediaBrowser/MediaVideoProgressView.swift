@@ -39,17 +39,18 @@ class MediaVideoProgressView: UIView {
         playButton.isSelected = isPlaying
     }
     
-    func setTime(now: CMTime, all: Int) {
-        let allTime = CGFloat(all)
-        let nowTime = CGFloat(Int(CMTimeGetSeconds(now)))
-        nowTimeLabel.text = formatPlayTime(seconds: nowTime)
-        allTimeLabel.text = formatPlayTime(seconds: allTime)
-        let pro = CGFloat(CMTimeGetSeconds(now)) / allTime
+    func setTime(now: CMTime, all: Float64) {
+        if all < 1.0 {
+            return
+        }
+        nowTimeLabel.text = formatPlayTime(seconds: CMTimeGetSeconds(now))
+        allTimeLabel.text = formatPlayTime(seconds: all)
+        let pro = CMTimeGetSeconds(now) / all
         progress.progress = Float(pro)
     }
     
     // 将秒转成时间字符串的方法
-    func formatPlayTime(seconds: CGFloat) -> String {
+    func formatPlayTime(seconds: Float64) -> String {
         let min = Int(seconds / 60)
         let sec = Int(seconds.truncatingRemainder(dividingBy: 60))
         return String(format: "%02d:%02d", min, sec)
