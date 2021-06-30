@@ -71,7 +71,6 @@ func floorcgf(x: CGFloat) -> CGFloat {
         return $0
     }(AVPlayerViewController())
     lazy internal var currentVideoProgressView: MediaVideoProgressView = {
-        $0.frame = CGRect(x: 15, y: UIScreen.main.bounds.size.height - 80, width: UIScreen.main.bounds.size.width - 30, height: 50)
         $0.playButton.addTarget(self, action: #selector(playOrPause), for: .touchUpInside)
         return $0
     }(MediaVideoProgressView())
@@ -1437,7 +1436,9 @@ func floorcgf(x: CGFloat) -> CGFloat {
             player.play()
             playingType = 1
             currentVideoProgressView.setPlayingOrPause(isPlaying: true)
-            safePage.addSubview(currentVideoProgressView)
+            pagingScrollView.addSubview(currentVideoProgressView)
+            currentVideoProgressView.center = CGPoint(x: safePage.center.x, y: safePage.frame.size.height - 55)
+            currentVideoProgressView.bounds = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width - 30, height: 50)
             dealPlayerProgress(player: player)
         }
     }
