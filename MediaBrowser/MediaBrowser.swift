@@ -70,6 +70,25 @@ func floorcgf(x: CGFloat) -> CGFloat {
         $0.view.isUserInteractionEnabled = false
         return $0
     }(AVPlayerViewController())
+    
+    // 长按保存图片
+    lazy var longPressTipLabel: UILabel = {
+        let l = UILabel()
+        l.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.4)
+        l.layer.cornerRadius = 13
+        l.layer.masksToBounds = true
+        l.text = "长按保存图片"
+        l.font = .systemFont(ofSize: 12, weight: .regular)
+        l.textColor = .white
+        l.textAlignment = .center
+        return l
+    }()
+    
+    lazy var longPress: UILongPressGestureRecognizer = {
+        let l = UILongPressGestureRecognizer(target: self, action: #selector(dolongPress(longPress:)))
+        return l
+    }()
+    
     lazy internal var currentVideoProgressView: MediaVideoProgressView = {
         $0.playButton.addTarget(self, action: #selector(playOrPause), for: .touchUpInside)
         return $0
@@ -244,6 +263,11 @@ func floorcgf(x: CGFloat) -> CGFloat {
                          If you want to use the placeholder image only for one special image page or cell, you should set the **currentIndex** variable.
      */
     public var placeholderImage: (image: UIImage, isAppliedForAll: Bool)?
+    
+    /**
+        是否需要长按保存图片功能
+     */
+    public var needLongPressSavePic: Bool = false
 
     //MARK: - Init
     
@@ -445,6 +469,41 @@ func floorcgf(x: CGFloat) -> CGFloat {
         }
         
         super.viewDidLoad()
+        
+        if needLongPressSavePic {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {[weak self] in
+                guard let stronglySelf = self else { return }
+                let page = stronglySelf.visiblePages.first{ $0.index == stronglySelf.currentIndex }
+                guard let safePage = page, let media = safePage.media else { return }
+                if media.isVideo == false {
+                    let imageFrame = safePage.photoImageView.frame
+                    stronglySelf.longPressTipLabel.frame = CGRect(x: UIScreen.main.bounds.width - 10 - 92, y: imageFrame.minY + 10 < UIApplication.shared.statusBarFrame.size.height + 60 ? UIApplication.shared.statusBarFrame.size.height + 60 : imageFrame.minY + 10, width: 92, height: 26)
+                    stronglySelf.longPressTipLabel.alpha = 0
+                    stronglySelf.view.addSubview(stronglySelf.longPressTipLabel)
+                    
+                    UIView.animate(withDuration: 0.25) {
+                        stronglySelf.longPressTipLabel.alpha = 1
+                    } completion: { b in
+                        if b {
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                                guard let stronglySelf = self else { return }
+                                
+                                UIView.animate(withDuration: 0.25) {
+                                    stronglySelf.longPressTipLabel.alpha = 0
+                                } completion: { b in
+                                    if b {
+                                        stronglySelf.longPressTipLabel.removeFromSuperview()
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            
+            // 长按功能
+            view.addGestureRecognizer(self.longPress)
+        }
     }
     
     /**
@@ -1935,4 +1994,16 @@ func floorcgf(x: CGFloat) -> CGFloat {
 
 extension MediaBrowser: UIActionSheetDelegate {
 
+}
+
+// 长按
+extension MediaBrowser {
+    @objc fileprivate func dolongPress(longPress: UILongPressGestureRecognizer) {
+        guard let d = delegate else {
+            return
+        }
+        let page = self.visiblePages.first{ $0.index == currentIndex }
+        guard let safePage = page else { return }
+        d.longPress(vc: self, model: safePage.media, imageView: safePage.photoImageView)
+    }
 }

@@ -104,6 +104,11 @@ public protocol MediaBrowserDelegate: NSObjectProtocol {
      Optional protocol for access token
      */
     func accessToken(for url: URL?) -> String?
+    
+    /**
+        长按事件
+     */
+    func longPress(vc: UIViewController, model: Media?, imageView: UIImageView)
 }
 
 public extension MediaBrowserDelegate {
@@ -128,4 +133,6 @@ public extension MediaBrowserDelegate {
     func gridCellSize() -> CGSize { return CGSize(width: 128, height: 128) }
 
     func accessToken(for url: URL?) -> String? { return nil }
+    
+    func longPress(vc: UIViewController, model: Media?, imageView: UIImageView) { }
 }

@@ -71,6 +71,15 @@ class ViewController: UITableViewController {
 
 //MARK: MediaBrowserDelegate
 extension ViewController: MediaBrowserDelegate {
+    func longPress(vc: UIViewController, model: Media?, imageView: UIImageView) {
+        guard let media = model else {
+            return
+        }
+        if media.isVideo == true {
+            return
+        }
+    }
+    
     func thumbnail(for mediaBrowser: MediaBrowser, at index: Int) -> Media {
         if index < thumbs.count {
             return thumbs[index]
@@ -197,6 +206,7 @@ extension ViewController {
         browser.setCurrentIndex(at: 2)
         browser.displayActionButton = false
         browser.actionButtonImage = UIImage(named: "iconCommon")
+        browser.needLongPressSavePic = true
 //        browser.placeholderImage = (image: #imageLiteral(resourceName: "mediaBrowserDefault_white"), isAppliedForAll: false)
         
         
